@@ -1,0 +1,15 @@
+export default {
+  background: '#000000',
+  surface: '#1C1C1E',
+  surfaceLight: '#2C2C2E',
+  text: '#FFFFFF',
+  textSecondary: '#8E8E93',
+  accent: '#FF9F0A',
+  accentDark: '#CC7F08',
+  border: '#38383A',
+  danger: '#FF453A',
+  success: '#30D158',
+  operator: '#FF9F0A',
+  number: '#333333',
+  function: '#A5A5A5',
+};
