@@ -101,7 +101,7 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
     margin: 5,
   },
   wideWrapper: {
-    flex: 2,
+    width: BUTTON_SIZE * 2 + 10,
   },
   button: {
     width: BUTTON_SIZE,
@@ -112,6 +112,7 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
   },
   wideButton: {
     width: '100%',
+    height: BUTTON_SIZE,
     borderRadius: BUTTON_SIZE / 2,
     paddingLeft: 28,
     alignItems: 'flex-start',
