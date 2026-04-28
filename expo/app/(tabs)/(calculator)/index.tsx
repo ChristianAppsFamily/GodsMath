@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Stack, useRouter } from 'expo-router';
 import { Settings as SettingsIcon } from 'lucide-react-native';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
 import CalculatorButton from '@/components/CalculatorButton';
 import AdBanner from '@/components/AdBanner';
 import DailyVerse from '@/components/DailyVerse';
@@ -11,6 +12,8 @@ import { useHistory } from '@/contexts/HistoryContext';
 import { useAdSettings } from '@/contexts/AdSettingsContext';
 
 export default function CalculatorScreen() {
+  const Colors = useThemeColors();
+  const styles = React.useMemo(() => createStyles(Colors), [Colors]);
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { history, addToHistory } = useHistory();
@@ -281,7 +284,7 @@ export default function CalculatorScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,

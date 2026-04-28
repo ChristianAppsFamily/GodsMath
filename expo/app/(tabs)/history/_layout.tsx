@@ -1,7 +1,8 @@
 import { Stack } from 'expo-router';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
 
 export default function HistoryLayout() {
+  const Colors = useThemeColors();
   return (
     <Stack
       screenOptions={{
@@ -11,10 +12,7 @@ export default function HistoryLayout() {
         contentStyle: { backgroundColor: Colors.background },
       }}
     >
-      <Stack.Screen 
-        name="index" 
-        options={{ title: 'History' }} 
-      />
+      <Stack.Screen name="index" options={{ title: 'History' }} />
     </Stack>
   );
 }

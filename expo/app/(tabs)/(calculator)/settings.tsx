@@ -1,12 +1,28 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, Alert, Platform } from 'react-native';
 import { Stack } from 'expo-router';
-import { BookOpen, Sparkles, ShieldCheck, Check, RotateCcw } from 'lucide-react-native';
+import { BookOpen, Sparkles, ShieldCheck, Check, RotateCcw, Sun, Moon, SunMoon, Info } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
-import Colors from '@/constants/colors';
+import { useThemeColors, useTheme, type ThemeMode } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
 import { useAdSettings } from '@/contexts/AdSettingsContext';
 
+interface ThemeOption {
+  id: ThemeMode;
+  label: string;
+  icon: React.ComponentType<{ size?: number; color?: string }>;
+}
+
+const THEME_OPTIONS: ThemeOption[] = [
+  { id: 'light', label: 'Light Mode', icon: Sun },
+  { id: 'dark', label: 'Night Mode', icon: Moon },
+  { id: 'system', label: 'System', icon: SunMoon },
+];
+
 export default function SettingsScreen() {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
+  const { mode, setMode } = useTheme();
   const { removeAds, showVerses, setRemoveAds, toggleShowVerses } = useAdSettings();
 
   const triggerHaptic = useCallback(() => {
@@ -19,6 +35,11 @@ export default function SettingsScreen() {
     triggerHaptic();
     void toggleShowVerses();
   }, [toggleShowVerses, triggerHaptic]);
+
+  const handleSelectMode = useCallback((next: ThemeMode) => {
+    triggerHaptic();
+    void setMode(next);
+  }, [setMode, triggerHaptic]);
 
   const handlePurchase = useCallback(() => {
     triggerHaptic();
@@ -106,6 +127,31 @@ export default function SettingsScreen() {
 
         <Text style={styles.sectionLabel}>APPEARANCE</Text>
         <View style={styles.card}>
+          {THEME_OPTIONS.map((opt, idx) => {
+            const Icon = opt.icon;
+            const selected = mode === opt.id;
+            return (
+              <React.Fragment key={opt.id}>
+                {idx > 0 && <View style={styles.divider} />}
+                <TouchableOpacity
+                  style={styles.themeRow}
+                  onPress={() => handleSelectMode(opt.id)}
+                  activeOpacity={0.7}
+                  testID={`theme-${opt.id}`}
+                >
+                  <View style={styles.iconBadge}>
+                    <Icon size={20} color={Colors.accent} />
+                  </View>
+                  <Text style={styles.rowTitle}>{opt.label}</Text>
+                  {selected && <Check size={20} color={Colors.accent} />}
+                </TouchableOpacity>
+              </React.Fragment>
+            );
+          })}
+        </View>
+
+        <Text style={styles.sectionLabel}>READING</Text>
+        <View style={styles.card}>
           <View style={styles.toggleRow}>
             <View style={styles.iconBadge}>
               <BookOpen size={20} color={Colors.accent} />
@@ -127,6 +173,23 @@ export default function SettingsScreen() {
           </View>
         </View>
 
+        <Text style={styles.sectionLabel}>CREDITS</Text>
+        <View style={styles.card}>
+          <View style={styles.creditsRow}>
+            <View style={styles.iconBadge}>
+              <Info size={20} color={Colors.accent} />
+            </View>
+            <View style={styles.creditsText}>
+              <Text style={styles.creditsTitle}>God Math — Calculator</Text>
+              <Text style={styles.creditsLine}>Developed by</Text>
+              <Text style={styles.creditsCompany}>Christian App Empire LLC</Text>
+              <Text style={styles.creditsCopyright}>
+                Copyright © 2026. All Rights Reserved.
+              </Text>
+            </View>
+          </View>
+        </View>
+
         <View style={styles.footer}>
           <Sparkles size={14} color={Colors.textSecondary} />
           <Text style={styles.footerText}>God Math · v1.0.0</Text>
@@ -136,7 +199,7 @@ export default function SettingsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -171,6 +234,12 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 12,
   },
+  themeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    gap: 12,
+  },
   simpleRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -193,6 +262,7 @@ const styles = StyleSheet.create({
     fontWeight: '600' as const,
     color: Colors.text,
     marginBottom: 2,
+    flex: 1,
   },
   rowSubtitle: {
     fontSize: 12,
@@ -206,7 +276,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   priceText: {
-    color: '#000000',
+    color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '700' as const,
   },
@@ -231,6 +301,37 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.textSecondary,
     fontWeight: '500' as const,
+  },
+  creditsRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 16,
+    gap: 12,
+  },
+  creditsText: {
+    flex: 1,
+  },
+  creditsTitle: {
+    fontSize: 16,
+    fontWeight: '700' as const,
+    color: Colors.text,
+    marginBottom: 6,
+  },
+  creditsLine: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+  },
+  creditsCompany: {
+    fontSize: 14,
+    fontWeight: '600' as const,
+    color: Colors.accent,
+    marginTop: 2,
+    marginBottom: 8,
+  },
+  creditsCopyright: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    lineHeight: 16,
   },
   footer: {
     flexDirection: 'row',

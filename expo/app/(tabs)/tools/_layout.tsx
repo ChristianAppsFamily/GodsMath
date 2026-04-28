@@ -1,7 +1,8 @@
 import { Stack } from 'expo-router';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
 
 export default function ToolsLayout() {
+  const Colors = useThemeColors();
   return (
     <Stack
       screenOptions={{
@@ -11,22 +12,10 @@ export default function ToolsLayout() {
         contentStyle: { backgroundColor: Colors.background },
       }}
     >
-      <Stack.Screen 
-        name="index" 
-        options={{ title: 'Financial Tools' }} 
-      />
-      <Stack.Screen 
-        name="loan" 
-        options={{ title: 'Loan Calculator' }} 
-      />
-      <Stack.Screen 
-        name="tip" 
-        options={{ title: 'Tip Calculator' }} 
-      />
-      <Stack.Screen 
-        name="interest" 
-        options={{ title: 'Interest Calculator' }} 
-      />
+      <Stack.Screen name="index" options={{ title: 'Financial Tools' }} />
+      <Stack.Screen name="loan" options={{ title: 'Loan Calculator' }} />
+      <Stack.Screen name="tip" options={{ title: 'Tip Calculator' }} />
+      <Stack.Screen name="interest" options={{ title: 'Interest Calculator' }} />
     </Stack>
   );
 }

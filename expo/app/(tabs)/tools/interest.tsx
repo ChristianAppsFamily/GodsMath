@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
 import InputField from '@/components/InputField';
 import ResultCard from '@/components/ResultCard';
 import AdBanner from '@/components/AdBanner';
@@ -15,6 +16,8 @@ const COMPOUND_FREQUENCIES = [
 ];
 
 export default function InterestCalculatorScreen() {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   const insets = useSafeAreaInsets();
   const { addToHistory } = useHistory();
   const [principal, setPrincipal] = useState('');
@@ -150,7 +153,7 @@ export default function InterestCalculatorScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,

@@ -1,7 +1,8 @@
 import { Stack } from 'expo-router';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
 
 export default function CalculatorLayout() {
+  const Colors = useThemeColors();
   return (
     <Stack
       screenOptions={{
@@ -11,19 +12,19 @@ export default function CalculatorLayout() {
         contentStyle: { backgroundColor: Colors.background },
       }}
     >
-      <Stack.Screen 
-        name="index" 
-        options={{ 
-          title: 'FastCalc',
+      <Stack.Screen
+        name="index"
+        options={{
+          title: 'God Math',
           headerLargeTitle: false,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="settings" 
-        options={{ 
+      <Stack.Screen
+        name="settings"
+        options={{
           title: 'Settings',
           presentation: 'card',
-        }} 
+        }}
       />
     </Stack>
   );

@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
-import { TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { TouchableOpacity, Text, StyleSheet, Animated, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
 
 interface CalculatorButtonProps {
   value: string;
@@ -10,12 +11,14 @@ interface CalculatorButtonProps {
   wide?: boolean;
 }
 
-export default function CalculatorButton({ 
-  value, 
-  onPress, 
+export default function CalculatorButton({
+  value,
+  onPress,
   type = 'number',
-  wide = false 
+  wide = false,
 }: CalculatorButtonProps) {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
 
   const handlePressIn = useCallback(() => {
@@ -34,7 +37,9 @@ export default function CalculatorButton({
   }, [scaleAnim]);
 
   const handlePress = useCallback(() => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (Platform.OS !== 'web') {
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
     onPress(value);
   }, [onPress, value]);
 
@@ -72,7 +77,7 @@ export default function CalculatorButton({
     <Animated.View style={[
       styles.buttonWrapper,
       wide && styles.wideWrapper,
-      { transform: [{ scale: scaleAnim }] }
+      { transform: [{ scale: scaleAnim }] },
     ]}>
       <TouchableOpacity
         style={[styles.button, getButtonStyle(), wide && styles.wideButton]}
@@ -90,7 +95,7 @@ export default function CalculatorButton({
 
 const BUTTON_SIZE = 68;
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   buttonWrapper: {
     margin: 6,
   },
@@ -133,10 +138,10 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   operatorText: {
-    color: Colors.text,
+    color: '#FFFFFF',
   },
   equalsText: {
-    color: Colors.text,
+    color: '#FFFFFF',
   },
   functionText: {
     color: Colors.background,

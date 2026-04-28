@@ -1,8 +1,9 @@
 import { Tabs } from 'expo-router';
 import { Calculator, Briefcase, Clock } from 'lucide-react-native';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
 
 export default function TabLayout() {
+  const Colors = useThemeColors();
   return (
     <Tabs
       screenOptions={{

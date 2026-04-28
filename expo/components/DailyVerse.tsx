@@ -1,10 +1,13 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { BookOpen, RefreshCw } from 'lucide-react-native';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
 import { BIBLE_VERSES, getDailyVerse, type BibleVerse } from '@/constants/bibleVerses';
 
 export default function DailyVerse() {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   const dailyVerse = useMemo(() => getDailyVerse(), []);
   const [verse, setVerse] = useState<BibleVerse>(dailyVerse);
   const [isCustom, setIsCustom] = useState<boolean>(false);
@@ -43,7 +46,7 @@ export default function DailyVerse() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     marginHorizontal: 16,
     marginTop: 8,

@@ -3,13 +3,15 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Trash2, Calculator, Banknote, Receipt, TrendingUp } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
+import { useMemo } from 'react';
 import AdBanner from '@/components/AdBanner';
 import { useHistory } from '@/contexts/HistoryContext';
 import { CalculationHistory } from '@/types/calculator';
 
-function getTypeIcon(type: CalculationHistory['type']) {
-  const iconProps = { size: 18, color: Colors.accent };
+function getTypeIcon(type: CalculationHistory['type'], accent: string) {
+  const iconProps = { size: 18, color: accent };
   switch (type) {
     case 'loan':
       return <Banknote {...iconProps} />;
@@ -45,6 +47,8 @@ interface HistoryItemProps {
 }
 
 function HistoryItem({ item, onDelete }: HistoryItemProps) {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   const handleDelete = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     onDelete(item.id);
@@ -53,7 +57,7 @@ function HistoryItem({ item, onDelete }: HistoryItemProps) {
   return (
     <View style={styles.item}>
       <View style={styles.iconContainer}>
-        {getTypeIcon(item.type)}
+        {getTypeIcon(item.type, Colors.accent)}
       </View>
       <View style={styles.itemContent}>
         {item.label && <Text style={styles.label}>{item.label}</Text>}
@@ -73,6 +77,8 @@ function HistoryItem({ item, onDelete }: HistoryItemProps) {
 }
 
 export default function HistoryScreen() {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   const insets = useSafeAreaInsets();
   const { history, isLoading, clearHistory, deleteEntry } = useHistory();
 
@@ -142,7 +148,7 @@ export default function HistoryScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,

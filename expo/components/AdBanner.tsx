@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
 
 interface AdBannerProps {
   testId?: string;
 }
 
 export default function AdBanner({ testId = 'ca-app-pub-3940256099942544/6300978111' }: AdBannerProps) {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   console.log('[AdBanner] Rendering with test ID:', testId);
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.banner}>
@@ -19,7 +22,7 @@ export default function AdBanner({ testId = 'ca-app-pub-3940256099942544/6300978
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
 
 interface InputFieldProps {
   label: string;
@@ -21,6 +22,8 @@ export default function InputField({
   prefix,
   suffix,
 }: InputFieldProps) {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -45,7 +48,7 @@ export default function InputField({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     marginBottom: 20,
   },

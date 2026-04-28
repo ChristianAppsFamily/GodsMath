@@ -6,25 +6,28 @@ import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { HistoryProvider } from "@/contexts/HistoryContext";
 import { AdSettingsProvider } from "@/contexts/AdSettingsContext";
-import Colors from "@/constants/colors";
+import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
 function RootLayoutNav() {
+  const { colors, effectiveScheme } = useTheme();
   return (
-    <Stack 
-      screenOptions={{ 
-        headerBackTitle: "Back",
-        headerStyle: { backgroundColor: Colors.background },
-        headerTintColor: Colors.text,
-        contentStyle: { backgroundColor: Colors.background },
-      }}
-    >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <StatusBar style={effectiveScheme === 'light' ? 'dark' : 'light'} />
+      <Stack
+        screenOptions={{
+          headerBackTitle: "Back",
+          headerStyle: { backgroundColor: colors.background },
+          headerTintColor: colors.text,
+          contentStyle: { backgroundColor: colors.background },
+        }}
+      >
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 }
 
@@ -36,12 +39,13 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <AdSettingsProvider>
-          <HistoryProvider>
-            <StatusBar style="light" />
-            <RootLayoutNav />
-          </HistoryProvider>
-        </AdSettingsProvider>
+        <ThemeProvider>
+          <AdSettingsProvider>
+            <HistoryProvider>
+              <RootLayoutNav />
+            </HistoryProvider>
+          </AdSettingsProvider>
+        </ThemeProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>
   );

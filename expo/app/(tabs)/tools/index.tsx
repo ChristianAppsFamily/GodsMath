@@ -4,7 +4,9 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Banknote, Receipt, TrendingUp } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
-import Colors from '@/constants/colors';
+import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
+import { useMemo } from 'react';
 import AdBanner from '@/components/AdBanner';
 
 interface ToolCardProps {
@@ -15,6 +17,8 @@ interface ToolCardProps {
 }
 
 function ToolCard({ title, description, icon, onPress }: ToolCardProps) {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onPress();
@@ -42,6 +46,8 @@ function ToolCard({ title, description, icon, onPress }: ToolCardProps) {
 }
 
 export default function ToolsScreen() {
+  const Colors = useThemeColors();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -91,7 +97,7 @@ export default function ToolsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (Colors: ColorSet) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
