@@ -192,7 +192,7 @@ export default function SettingsScreen() {
 
         <View style={styles.footer}>
           <Sparkles size={14} color={Colors.textSecondary} />
-          <Text style={styles.footerText}>God Math · v1.0.0</Text>
+          <Text style={styles.footerText}>Proverbs 21:5</Text>
         </View>
       </ScrollView>
     </>
