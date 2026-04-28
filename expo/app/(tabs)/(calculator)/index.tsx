@@ -291,24 +291,25 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
   },
   displayContainer: {
     paddingHorizontal: 24,
-    paddingBottom: 8,
+    paddingBottom: 4,
+    paddingTop: 8,
     alignItems: 'flex-end',
   },
   displayScroll: {
     justifyContent: 'flex-end',
   },
   display: {
-    fontSize: 72,
+    fontSize: 56,
     fontWeight: '300' as const,
     color: Colors.text,
     letterSpacing: -2,
     textAlign: 'right',
   },
   displaySmall: {
-    fontSize: 56,
+    fontSize: 44,
   },
   displayXSmall: {
-    fontSize: 42,
+    fontSize: 34,
   },
   memoryIndicator: {
     backgroundColor: Colors.accent,
@@ -323,9 +324,9 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
     fontWeight: '600' as const,
   },
   historyTape: {
-    maxHeight: 120,
+    maxHeight: 90,
     paddingHorizontal: 24,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   historyItem: {
     flexDirection: 'row',
@@ -348,6 +349,7 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
   },
   keypad: {
     paddingHorizontal: 8,
+    marginTop: 'auto',
   },
   row: {
     flexDirection: 'row',

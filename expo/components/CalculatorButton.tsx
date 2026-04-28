@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { TouchableOpacity, Text, StyleSheet, Animated, Platform } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Animated, Platform, Dimensions } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { useThemeColors } from '@/contexts/ThemeContext';
 import type { ColorSet } from '@/constants/colors';
@@ -93,11 +93,12 @@ export default function CalculatorButton({
   );
 }
 
-const BUTTON_SIZE = 68;
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const BUTTON_SIZE = Math.min(68, Math.floor((SCREEN_WIDTH - 16 - 12 * 4) / 4));
 
 const createStyles = (Colors: ColorSet) => StyleSheet.create({
   buttonWrapper: {
-    margin: 6,
+    margin: 5,
   },
   wideWrapper: {
     flex: 2,
@@ -131,7 +132,7 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
     backgroundColor: Colors.surfaceLight,
   },
   text: {
-    fontSize: 32,
+    fontSize: Math.min(30, BUTTON_SIZE * 0.45),
     fontWeight: '500' as const,
   },
   numberText: {
@@ -148,6 +149,6 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
   },
   memoryText: {
     color: Colors.textSecondary,
-    fontSize: 20,
+    fontSize: Math.min(18, BUTTON_SIZE * 0.3),
   },
 });
