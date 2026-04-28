@@ -48,6 +48,8 @@ const createStyles = (Colors: ColorSet) =>
     container: {
       flex: 1,
       backgroundColor: Colors.background,
+      borderWidth: 1,
+      borderColor: Colors.success,
     },
     adBar: {
       backgroundColor: Colors.background,
