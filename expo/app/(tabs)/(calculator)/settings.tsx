@@ -25,7 +25,7 @@ export default function SettingsScreen() {
     if (removeAds) return;
     Alert.alert(
       'Remove Ads',
-      'Unlock an ad-free FastCalc experience for a one-time purchase of $4.99.',
+      'Unlock an ad-free God Math experience for a one-time purchase of $4.99.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -37,7 +37,7 @@ export default function SettingsScreen() {
             if (Platform.OS !== 'web') {
               void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
             }
-            Alert.alert('Thank you!', 'Ads have been removed. Enjoy FastCalc.');
+            Alert.alert('Thank you!', 'Ads have been removed. Enjoy God Math.');
           },
         },
       ],
@@ -129,7 +129,7 @@ export default function SettingsScreen() {
 
         <View style={styles.footer}>
           <Sparkles size={14} color={Colors.textSecondary} />
-          <Text style={styles.footerText}>FastCalc · v1.0.0</Text>
+          <Text style={styles.footerText}>God Math · v1.0.0</Text>
         </View>
       </ScrollView>
     </>
