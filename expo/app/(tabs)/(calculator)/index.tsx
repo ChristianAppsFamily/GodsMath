@@ -1,12 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Stack, useRouter } from 'expo-router';
-import { Settings as SettingsIcon } from 'lucide-react-native';
 import { useThemeColors } from '@/contexts/ThemeContext';
 import type { ColorSet } from '@/constants/colors';
 import CalculatorButton from '@/components/CalculatorButton';
-import AdBanner from '@/components/AdBanner';
 import DailyVerse from '@/components/DailyVerse';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useAdSettings } from '@/contexts/AdSettingsContext';
@@ -14,10 +10,8 @@ import { useAdSettings } from '@/contexts/AdSettingsContext';
 export default function CalculatorScreen() {
   const Colors = useThemeColors();
   const styles = React.useMemo(() => createStyles(Colors), [Colors]);
-  const insets = useSafeAreaInsets();
-  const router = useRouter();
   const { history, addToHistory } = useHistory();
-  const { removeAds, showVerses } = useAdSettings();
+  const { showVerses } = useAdSettings();
   const [currentInput, setCurrentInput] = useState('0');
   const [previousValue, setPreviousValue] = useState<string | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
@@ -170,26 +164,8 @@ export default function CalculatorScreen() {
 
   const displayValue = formatNumber(currentInput);
 
-  const openSettings = useCallback(() => {
-    router.push('/(tabs)/(calculator)/settings');
-  }, [router]);
-
   return (
     <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={openSettings}
-              style={styles.headerBtn}
-              testID="open-settings"
-              hitSlop={12}
-            >
-              <SettingsIcon size={22} color={Colors.text} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
       {showVerses && <DailyVerse />}
       <View style={styles.displayContainer}>
         <ScrollView 
@@ -275,11 +251,6 @@ export default function CalculatorScreen() {
         </View>
       </View>
 
-      {!removeAds && (
-        <View style={[styles.adContainer, { paddingBottom: insets.bottom > 0 ? 0 : 8 }]} testID="calculator-ad-slot">
-          <AdBanner />
-        </View>
-      )}
     </View>
   );
 }
@@ -354,11 +325,5 @@ const createStyles = (Colors: ColorSet) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-  },
-  adContainer: {
-    marginTop: 8,
-  },
-  headerBtn: {
-    paddingHorizontal: 8,
   },
 });

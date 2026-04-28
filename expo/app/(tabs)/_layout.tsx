@@ -1,43 +1,58 @@
+import React, { useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Tabs } from 'expo-router';
-import { Calculator, Briefcase, Clock } from 'lucide-react-native';
 import { useThemeColors } from '@/contexts/ThemeContext';
+import type { ColorSet } from '@/constants/colors';
+import { useAdSettings } from '@/contexts/AdSettingsContext';
+import TopTabBar from '@/components/TopTabBar';
+import AdBanner from '@/components/AdBanner';
 
 export default function TabLayout() {
   const Colors = useThemeColors();
+  const insets = useSafeAreaInsets();
+  const { removeAds } = useAdSettings();
+  const styles = useMemo(() => createStyles(Colors), [Colors]);
+
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors.accent,
-        tabBarInactiveTintColor: Colors.textSecondary,
-        tabBarStyle: {
-          backgroundColor: Colors.surface,
-          borderTopColor: Colors.border,
-          borderTopWidth: 0.5,
-        },
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen
-        name="(calculator)"
-        options={{
-          title: 'Calculator',
-          tabBarIcon: ({ color, size }) => <Calculator size={size} color={color} />,
+    <View style={styles.container}>
+      <Tabs
+        tabBar={(props) => <TopTabBar {...props} />}
+        screenOptions={{
+          headerShown: false,
+          tabBarPosition: 'top',
         }}
-      />
-      <Tabs.Screen
-        name="tools"
-        options={{
-          title: 'Tools',
-          tabBarIcon: ({ color, size }) => <Briefcase size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-          tabBarIcon: ({ color, size }) => <Clock size={size} color={color} />,
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen name="(calculator)" />
+        <Tabs.Screen name="tools" />
+        <Tabs.Screen name="history" />
+        <Tabs.Screen name="settings" />
+      </Tabs>
+      {!removeAds && (
+        <View
+          style={[
+            styles.adBar,
+            { paddingBottom: insets.bottom > 0 ? insets.bottom : 8 },
+          ]}
+          testID="bottom-ad-bar"
+        >
+          <AdBanner />
+        </View>
+      )}
+    </View>
   );
 }
+
+const createStyles = (Colors: ColorSet) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.background,
+    },
+    adBar: {
+      backgroundColor: Colors.background,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: Colors.border,
+      paddingTop: 4,
+    },
+  });

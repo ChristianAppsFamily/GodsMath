@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { useThemeColors } from '@/contexts/ThemeContext';
 
-export default function CalculatorLayout() {
+export default function SettingsLayout() {
   const Colors = useThemeColors();
   return (
     <Stack
@@ -12,13 +12,7 @@ export default function CalculatorLayout() {
         contentStyle: { backgroundColor: Colors.background },
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'God Math',
-          headerLargeTitle: false,
-        }}
-      />
+      <Stack.Screen name="index" options={{ title: 'Settings' }} />
     </Stack>
   );
 }
