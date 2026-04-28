@@ -4,7 +4,7 @@ export interface CalculationHistory {
   result: string;
   label?: string;
   timestamp: number;
-  type: 'basic' | 'loan' | 'tip' | 'interest';
+  type: 'basic' | 'loan' | 'tip' | 'interest' | 'mortgage' | 'salary' | 'fuel';
 }
 
 export interface LoanResult {

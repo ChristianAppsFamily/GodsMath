@@ -16,6 +16,9 @@ export default function ToolsLayout() {
       <Stack.Screen name="loan" options={{ title: 'Loan Calculator' }} />
       <Stack.Screen name="tip" options={{ title: 'Tip Calculator' }} />
       <Stack.Screen name="interest" options={{ title: 'Interest Calculator' }} />
+      <Stack.Screen name="mortgage" options={{ title: 'Mortgage Calculator' }} />
+      <Stack.Screen name="salary" options={{ title: 'Hourly ↔ Salary' }} />
+      <Stack.Screen name="fuel" options={{ title: 'Fuel Cost Calculator' }} />
     </Stack>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Banknote, Receipt, TrendingUp } from 'lucide-react-native';
+import { Banknote, Receipt, TrendingUp, Home, Briefcase, Fuel } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useThemeColors } from '@/contexts/ThemeContext';
 import type { ColorSet } from '@/constants/colors';
@@ -69,6 +69,24 @@ export default function ToolsScreen() {
       description: 'Compound interest and investment growth',
       icon: <TrendingUp size={28} color={Colors.accent} />,
       route: '/tools/interest' as const,
+    },
+    {
+      title: 'Mortgage Calculator',
+      description: 'Estimate monthly mortgage with taxes & insurance',
+      icon: <Home size={28} color={Colors.accent} />,
+      route: '/tools/mortgage' as const,
+    },
+    {
+      title: 'Hourly ↔ Salary',
+      description: 'Convert hourly wage to annual salary and back',
+      icon: <Briefcase size={28} color={Colors.accent} />,
+      route: '/tools/salary' as const,
+    },
+    {
+      title: 'Fuel Cost Calculator',
+      description: 'Estimate trip fuel costs based on MPG and price',
+      icon: <Fuel size={28} color={Colors.accent} />,
+      route: '/tools/fuel' as const,
     },
   ];
 
