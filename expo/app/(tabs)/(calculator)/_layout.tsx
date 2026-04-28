@@ -15,8 +15,7 @@ export default function CalculatorLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'God Math',
-          headerLargeTitle: false,
+          headerShown: false,
         }}
       />
     </Stack>

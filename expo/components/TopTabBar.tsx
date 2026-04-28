@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
@@ -24,6 +24,10 @@ export default function TopTabBar({ state, navigation }: BottomTabBarProps) {
   return (
     <View style={[styles.wrapper, { paddingTop: insets.top }]}>
       <View style={styles.bar}>
+        <Text style={styles.title} numberOfLines={1} testID="top-bar-title">
+          God Math
+        </Text>
+        <View style={styles.icons}>
         {state.routes.map((route, index) => {
           const config = ROUTE_ICONS[route.name];
           if (!config) return null;
@@ -70,6 +74,7 @@ export default function TopTabBar({ state, navigation }: BottomTabBarProps) {
             </TouchableOpacity>
           );
         })}
+        </View>
       </View>
     </View>
   );
@@ -85,19 +90,31 @@ const createStyles = (Colors: ColorSet) =>
     bar: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-around',
-      paddingHorizontal: 12,
-      paddingVertical: 8,
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      paddingVertical: 6,
+    },
+    title: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: Colors.text,
+      letterSpacing: 0.2,
+      marginRight: 8,
+      flexShrink: 1,
+    },
+    icons: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     button: {
-      flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      marginLeft: 4,
     },
     iconWrap: {
-      width: 44,
-      height: 44,
-      borderRadius: 12,
+      width: 38,
+      height: 38,
+      borderRadius: 10,
       alignItems: 'center',
       justifyContent: 'center',
     },
