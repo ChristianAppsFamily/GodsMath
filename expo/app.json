@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "God's Math",
+    "slug": "gods-math",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "gods-math",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.christianappempire.godsmath",
+      "infoPlist": {
+        "NSUserTrackingUsageDescription": "We use your data to deliver more relevant ads and support app improvements for God's Math.",
+        "GADApplicationIdentifier": "ca-app-pub-3002325591150738~4085524787",
+        "UIBackgroundModes": ["remote-notification"]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.christianappempire.godsmath",
+      "permissions": ["com.google.android.gms.permission.AD_ID"]
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "iosAppId": "ca-app-pub-3002325591150738~4085524787",
+          "androidAppId": "ca-app-pub-3002325591150738~2534343773",
+          "delayAppMeasurementInit": true
+        }
+      ],
+      "expo-iap",
+      "expo-tracking-transparency",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#FF9F0A"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "God Math-Calculator",
+      "path": "expo",
+      "framework": "react-native"
+    }
+  ]
+}
