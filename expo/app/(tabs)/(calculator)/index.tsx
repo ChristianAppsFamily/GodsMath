@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useThemeColors } from '@/contexts/ThemeContext';
 import type { ColorSet } from '@/constants/colors';
 import { BOTTOM_AD_BAR_HEIGHT } from '@/constants/ads';
@@ -21,8 +21,6 @@ export default function CalculatorScreen() {
   const [operation, setOperation] = useState<string | null>(null);
   const [memoryValue, setMemoryValue] = useState(0);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
-
-  const recentHistory = history.slice(0, 5);
 
   const formatNumber = (num: string): string => {
     const parts = num.split('.');
@@ -178,11 +176,6 @@ export default function CalculatorScreen() {
     ],
   );
 
-  const handleHistoryTap = useCallback((result: string) => {
-    setCurrentInput(result);
-    setShouldResetDisplay(true);
-  }, []);
-
   const displayValue = formatNumber(currentInput);
 
   return (
@@ -220,26 +213,6 @@ export default function CalculatorScreen() {
           </View>
         )}
       </View>
-
-      {recentHistory.length > 0 && (
-        <View style={styles.historyTape}>
-          <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-            {recentHistory.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                style={styles.historyItem}
-                onPress={() => handleHistoryTap(item.result)}
-                activeOpacity={0.7}
-              >
-                <Text style={styles.historyExpression} numberOfLines={1}>
-                  {item.expression}
-                </Text>
-                <Text style={styles.historyResult}>= {formatNumber(item.result)}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      )}
 
       <View style={styles.keypad}>
         <View style={styles.row}>
@@ -325,30 +298,6 @@ const createStyles = (Colors: ColorSet) =>
       color: Colors.background,
       fontSize: 12,
       fontWeight: '600',
-    },
-    historyTape: {
-      maxHeight: 90,
-      paddingHorizontal: 24,
-      marginBottom: 8,
-    },
-    historyItem: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: 6,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: Colors.border,
-    },
-    historyExpression: {
-      fontSize: 14,
-      color: Colors.textSecondary,
-      flex: 1,
-      marginRight: 12,
-    },
-    historyResult: {
-      fontSize: 16,
-      color: Colors.text,
-      fontWeight: '500',
     },
     keypad: {
       paddingHorizontal: 8,
