@@ -4,14 +4,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Tabs } from 'expo-router';
 import { useThemeColors } from '@/contexts/ThemeContext';
 import type { ColorSet } from '@/constants/colors';
-import { useAdSettings } from '@/contexts/AdSettingsContext';
 import TopTabBar from '@/components/TopTabBar';
 import AdBanner from '@/components/AdBanner';
+import { useAds } from '@/providers/AdsProvider';
 
 export default function TabLayout() {
   const Colors = useThemeColors();
   const insets = useSafeAreaInsets();
-  const { removeAds } = useAdSettings();
+  const { adsEnabled } = useAds();
   const styles = useMemo(() => createStyles(Colors), [Colors]);
 
   return (
@@ -30,7 +30,7 @@ export default function TabLayout() {
         <Tabs.Screen name="settings" />
       </Tabs>
       </View>
-      {!removeAds && (
+      {adsEnabled && (
         <View
           style={[
             styles.adBar,

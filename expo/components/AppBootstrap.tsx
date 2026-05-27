@@ -13,7 +13,7 @@ type Props = {
  * Hide splash → ATT prompt → AdMob init → ads on main screen.
  */
 export function AppBootstrap({ children }: Props) {
-  const { setPersonalizedAdsAllowed } = useAds();
+  const { setPersonalizedAdsAllowed, openAdsGate } = useAds();
   const startupStarted = useRef(false);
 
   const runStartup = useCallback(async () => {
@@ -34,11 +34,14 @@ export function AppBootstrap({ children }: Props) {
       const trackingGranted = await requestTrackingPermission();
       setPersonalizedAdsAllowed(trackingGranted);
       await initializeAds();
+      // Only after ATT finishes + AdMob initializes do we allow ads to render.
+      openAdsGate();
     } catch (err) {
       console.warn('[Bootstrap] startup error:', err);
       await initializeAds().catch(() => undefined);
+      openAdsGate();
     }
-  }, [setPersonalizedAdsAllowed]);
+  }, [openAdsGate, setPersonalizedAdsAllowed]);
 
   const onRootLayout = useCallback(() => {
     void runStartup();
