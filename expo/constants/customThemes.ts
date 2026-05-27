@@ -14,7 +14,7 @@ export const CUSTOM_THEMES: CustomThemeOption[] = [
   {
     id: 'default',
     name: 'Classic Gold',
-    description: 'Original God Math look',
+    description: "Original God's Math look",
     preview: '#FF9F0A',
     colors: {},
   },

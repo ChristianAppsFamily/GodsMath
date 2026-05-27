@@ -6,7 +6,7 @@ import {
 } from 'react-native-google-mobile-ads';
 import createContextHook from '@nkzw/create-context-hook';
 import { BANNER_AD_UNIT_ID, INTERSTITIAL_AD_UNIT_ID } from '@/constants/ads';
-import { isAdsReady, whenAdsReady } from '@/lib/ads';
+import { initializeAds, isAdsReady, whenAdsReady } from '@/lib/ads';
 import { useAdSettings } from '@/contexts/AdSettingsContext';
 
 const MAX_INTERSTITIALS_PER_SESSION = 3;
@@ -23,6 +23,10 @@ function useAdsContext() {
   const isSupportedPlatform = Platform.OS === 'ios' || Platform.OS === 'android';
 
   useEffect(() => {
+    if (Platform.OS === 'web') return;
+    void initializeAds().then(() => {
+      if (isAdsReady()) setSdkReady(true);
+    });
     if (sdkReady) return;
     return whenAdsReady(() => setSdkReady(true));
   }, [sdkReady]);
@@ -75,7 +79,8 @@ function useAdsContext() {
   return useMemo(
     () => ({
       sdkReady,
-      adsEnabled: sdkReady && isSupportedPlatform && !removeAds,
+      adsEnabled: isSupportedPlatform && !removeAds,
+      sdkReady,
       bannerAdUnitId: BANNER_AD_UNIT_ID,
       canRequestPersonalizedAds,
       setPersonalizedAdsAllowed,
@@ -90,6 +95,7 @@ function useAdsContext() {
       setPersonalizedAdsAllowed,
       onTabSwitch,
       showInterstitialIfLoaded,
+      bannerAdUnitId,
     ],
   );
 }

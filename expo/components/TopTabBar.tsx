@@ -27,7 +27,7 @@ export default function TopTabBar({ state, navigation }: BottomTabBarProps) {
     <View style={[styles.wrapper, { paddingTop: insets.top }]}>
       <View style={styles.bar}>
         <Text style={styles.title} numberOfLines={1} testID="top-bar-title">
-          God Math
+          {"God's Math"}
         </Text>
         <View style={styles.icons}>
         {state.routes.map((route, index) => {

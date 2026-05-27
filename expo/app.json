@@ -17,6 +17,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.christianappempire.godsmath",
       "infoPlist": {
+        "CFBundleDisplayName": "God's Math",
         "NSUserTrackingUsageDescription": "We use your data to deliver more relevant ads and support app improvements for God's Math.",
         "GADApplicationIdentifier": "ca-app-pub-3002325591150738~4085524787",
         "UIBackgroundModes": ["remote-notification"]
@@ -28,6 +29,7 @@
         "backgroundColor": "#000000"
       },
       "package": "com.christianappempire.godsmath",
+      "label": "God's Math",
       "permissions": ["com.google.android.gms.permission.AD_ID"]
     },
     "web": {

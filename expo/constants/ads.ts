@@ -2,10 +2,10 @@ import { Platform } from 'react-native';
 import { TestIds } from 'react-native-google-mobile-ads';
 
 /**
- * Xcode debug / local test builds: Google test units when __DEV__ is true.
- * App Store release: production IDs only — never set USE_TEST_ADS = true for shipping.
+ * Google test units for Xcode / TestFlight builds (including Release where __DEV__ is false).
+ * Set to `false` only for the final App Store submission build.
  */
-export const USE_TEST_ADS = __DEV__;
+export const USE_TEST_ADS = true;
 
 export const ADMOB_APP_IDS = {
   ios: 'ca-app-pub-3002325591150738~4085524787',
@@ -33,3 +33,6 @@ export const INTERSTITIAL_AD_UNIT_ID = USE_TEST_ADS
   : Platform.OS === 'ios'
     ? PRODUCTION_INTERSTITIAL.ios
     : PRODUCTION_INTERSTITIAL.android;
+
+/** Reserve space above the bottom ad bar so the keypad is not flush against it. */
+export const BOTTOM_AD_BAR_HEIGHT = 60;

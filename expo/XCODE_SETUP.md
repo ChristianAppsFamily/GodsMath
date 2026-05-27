@@ -48,9 +48,8 @@ Create a non-consumable IAP:
 
 ## 6. AdMob test vs production
 
-- **Debug / Xcode Run:** `USE_TEST_ADS` follows `__DEV__` in `constants/ads.ts` → Google test units fill reliably.
-- **App Store archive:** `__DEV__` is false → your production AdMob IDs are used automatically.
-- **Never** set `USE_TEST_ADS = true` in a build you submit to the App Store.
+- **Xcode / TestFlight (including Release):** `USE_TEST_ADS = true` in `constants/ads.ts` → Google test units (works when `__DEV__` is false).
+- **Final App Store submit:** set `USE_TEST_ADS = false` in `constants/ads.ts` so production AdMob IDs are used.
 
 ## 7. Run on your iPhone
 

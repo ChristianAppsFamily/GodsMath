@@ -2,10 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useThemeColors } from '@/contexts/ThemeContext';
 import type { ColorSet } from '@/constants/colors';
+import { BOTTOM_AD_BAR_HEIGHT } from '@/constants/ads';
 import CalculatorButton from '@/components/CalculatorButton';
 import DailyVerse from '@/components/DailyVerse';
 import { useHistory } from '@/contexts/HistoryContext';
 import { useAdSettings } from '@/contexts/AdSettingsContext';
+
+/** Space between keypad and bottom ad footer. */
+const KEYPAD_BOTTOM_PADDING = BOTTOM_AD_BAR_HEIGHT + 20;
 
 export default function CalculatorScreen() {
   const Colors = useThemeColors();
@@ -50,29 +54,38 @@ export default function CalculatorScreen() {
 
   const handleEquals = useCallback(() => {
     if (!previousValue || !operation) return;
-    
+
     const current = parseFloat(currentInput.replace(/,/g, ''));
     const previous = parseFloat(previousValue);
     let result = 0;
-    
+
     const opSymbol = operation === '*' ? '×' : operation === '/' ? '÷' : operation === '-' ? '−' : operation;
     const fullExpression = `${previousValue} ${opSymbol} ${currentInput.replace(/,/g, '')}`;
-    
+
     try {
       switch (operation) {
-        case '+': result = previous + current; break;
-        case '-': result = previous - current; break;
-        case '*': result = previous * current; break;
-        case '/': result = current !== 0 ? previous / current : NaN; break;
-        default: return;
+        case '+':
+          result = previous + current;
+          break;
+        case '-':
+          result = previous - current;
+          break;
+        case '*':
+          result = previous * current;
+          break;
+        case '/':
+          result = current !== 0 ? previous / current : NaN;
+          break;
+        default:
+          return;
       }
-      
+
       if (isNaN(result) || !isFinite(result)) {
         setCurrentInput('Error');
       } else {
         const resultStr = parseFloat(result.toPrecision(10)).toString();
         setCurrentInput(resultStr);
-        
+
         addToHistory({
           expression: fullExpression,
           result: resultStr,
@@ -82,7 +95,7 @@ export default function CalculatorScreen() {
     } catch {
       setCurrentInput('Error');
     }
-    
+
     setPreviousValue(null);
     setOperation(null);
     setShouldResetDisplay(true);
@@ -105,24 +118,20 @@ export default function CalculatorScreen() {
 
   const handleMemoryClear = useCallback(() => {
     setMemoryValue(0);
-    console.log('[Calculator] Memory cleared');
   }, []);
 
   const handleMemoryAdd = useCallback(() => {
     const current = parseFloat(currentInput.replace(/,/g, ''));
-    setMemoryValue(prev => prev + current);
-    console.log('[Calculator] Memory add:', current);
+    setMemoryValue((prev) => prev + current);
   }, [currentInput]);
 
   const handleMemorySubtract = useCallback(() => {
     const current = parseFloat(currentInput.replace(/,/g, ''));
-    setMemoryValue(prev => prev - current);
-    console.log('[Calculator] Memory subtract:', current);
+    setMemoryValue((prev) => prev - current);
   }, [currentInput]);
 
   const handleMemoryRecall = useCallback(() => {
     setCurrentInput(memoryValue.toString());
-    console.log('[Calculator] Memory recall:', memoryValue);
   }, [memoryValue]);
 
   const handlePercent = useCallback(() => {
@@ -130,32 +139,44 @@ export default function CalculatorScreen() {
     setCurrentInput((num / 100).toString());
   }, [currentInput]);
 
-  const handlePress = useCallback((value: string) => {
-    console.log('[Calculator] Button pressed:', value);
-    
-    if ('0123456789.'.includes(value)) {
-      handleNumber(value);
-    } else if (['+', '−', '×', '÷'].includes(value)) {
-      const opMap: Record<string, string> = { '−': '-', '×': '*', '÷': '/' };
-      handleOperator(opMap[value] || value);
-    } else if (value === '=') {
-      handleEquals();
-    } else if (value === 'C') {
-      handleClear();
-    } else if (value === '⌫') {
-      handleBackspace();
-    } else if (value === '%') {
-      handlePercent();
-    } else if (value === 'MC') {
-      handleMemoryClear();
-    } else if (value === 'M+') {
-      handleMemoryAdd();
-    } else if (value === 'M−') {
-      handleMemorySubtract();
-    } else if (value === 'MR') {
-      handleMemoryRecall();
-    }
-  }, [handleNumber, handleOperator, handleEquals, handleClear, handleBackspace, handlePercent, handleMemoryClear, handleMemoryAdd, handleMemorySubtract, handleMemoryRecall]);
+  const handlePress = useCallback(
+    (value: string) => {
+      if ('0123456789.'.includes(value)) {
+        handleNumber(value);
+      } else if (['+', '−', '×', '÷'].includes(value)) {
+        const opMap: Record<string, string> = { '−': '-', '×': '*', '÷': '/' };
+        handleOperator(opMap[value] || value);
+      } else if (value === '=') {
+        handleEquals();
+      } else if (value === 'C') {
+        handleClear();
+      } else if (value === '⌫') {
+        handleBackspace();
+      } else if (value === '%') {
+        handlePercent();
+      } else if (value === 'MC') {
+        handleMemoryClear();
+      } else if (value === 'M+') {
+        handleMemoryAdd();
+      } else if (value === 'M−') {
+        handleMemorySubtract();
+      } else if (value === 'MR') {
+        handleMemoryRecall();
+      }
+    },
+    [
+      handleNumber,
+      handleOperator,
+      handleEquals,
+      handleClear,
+      handleBackspace,
+      handlePercent,
+      handleMemoryClear,
+      handleMemoryAdd,
+      handleMemorySubtract,
+      handleMemoryRecall,
+    ],
+  );
 
   const handleHistoryTap = useCallback((result: string) => {
     setCurrentInput(result);
@@ -165,27 +186,34 @@ export default function CalculatorScreen() {
   const displayValue = formatNumber(currentInput);
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+      testID="calculator-scroll"
+    >
       {showVerses && <DailyVerse />}
+
       <View style={styles.displayContainer}>
-        <ScrollView 
-          horizontal 
+        <ScrollView
+          horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.displayScroll}
         >
-          <Text 
+          <Text
             style={[
               styles.display,
               displayValue.length > 8 && styles.displaySmall,
               displayValue.length > 11 && styles.displayXSmall,
-            ]} 
+            ]}
             numberOfLines={1}
             adjustsFontSizeToFit
           >
             {displayValue}
           </Text>
         </ScrollView>
-        
+
         {memoryValue !== 0 && (
           <View style={styles.memoryIndicator}>
             <Text style={styles.memoryText}>M</Text>
@@ -195,10 +223,10 @@ export default function CalculatorScreen() {
 
       {recentHistory.length > 0 && (
         <View style={styles.historyTape}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
             {recentHistory.map((item) => (
-              <TouchableOpacity 
-                key={item.id} 
+              <TouchableOpacity
+                key={item.id}
                 style={styles.historyItem}
                 onPress={() => handleHistoryTap(item.result)}
                 activeOpacity={0.7}
@@ -250,80 +278,85 @@ export default function CalculatorScreen() {
           <CalculatorButton value="=" onPress={handlePress} type="equals" />
         </View>
       </View>
-
-    </View>
+    </ScrollView>
   );
 }
 
-const createStyles = (Colors: ColorSet) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  displayContainer: {
-    paddingHorizontal: 24,
-    paddingBottom: 4,
-    paddingTop: 8,
-    alignItems: 'flex-end',
-  },
-  displayScroll: {
-    justifyContent: 'flex-end',
-  },
-  display: {
-    fontSize: 56,
-    fontWeight: '300' as const,
-    color: Colors.text,
-    letterSpacing: -2,
-    textAlign: 'right',
-  },
-  displaySmall: {
-    fontSize: 44,
-  },
-  displayXSmall: {
-    fontSize: 34,
-  },
-  memoryIndicator: {
-    backgroundColor: Colors.accent,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginTop: 8,
-  },
-  memoryText: {
-    color: Colors.background,
-    fontSize: 12,
-    fontWeight: '600' as const,
-  },
-  historyTape: {
-    maxHeight: 90,
-    paddingHorizontal: 24,
-    marginBottom: 8,
-  },
-  historyItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 6,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
-  },
-  historyExpression: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    flex: 1,
-    marginRight: 12,
-  },
-  historyResult: {
-    fontSize: 16,
-    color: Colors.text,
-    fontWeight: '500' as const,
-  },
-  keypad: {
-    paddingHorizontal: 8,
-    marginTop: 'auto',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-});
+const createStyles = (Colors: ColorSet) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.background,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      paddingBottom: KEYPAD_BOTTOM_PADDING,
+    },
+    displayContainer: {
+      paddingHorizontal: 24,
+      paddingBottom: 4,
+      paddingTop: 8,
+      alignItems: 'flex-end',
+    },
+    displayScroll: {
+      justifyContent: 'flex-end',
+    },
+    display: {
+      fontSize: 56,
+      fontWeight: '300',
+      color: Colors.text,
+      letterSpacing: -2,
+      textAlign: 'right',
+    },
+    displaySmall: {
+      fontSize: 44,
+    },
+    displayXSmall: {
+      fontSize: 34,
+    },
+    memoryIndicator: {
+      backgroundColor: Colors.accent,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 12,
+      marginTop: 8,
+    },
+    memoryText: {
+      color: Colors.background,
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    historyTape: {
+      maxHeight: 90,
+      paddingHorizontal: 24,
+      marginBottom: 8,
+    },
+    historyItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 6,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: Colors.border,
+    },
+    historyExpression: {
+      fontSize: 14,
+      color: Colors.textSecondary,
+      flex: 1,
+      marginRight: 12,
+    },
+    historyResult: {
+      fontSize: 16,
+      color: Colors.text,
+      fontWeight: '500',
+    },
+    keypad: {
+      paddingHorizontal: 8,
+      marginTop: 12,
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginBottom: 4,
+    },
+  });

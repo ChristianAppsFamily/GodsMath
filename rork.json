@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "God Math-Calculator",
+      "name": "God's Math",
       "path": "expo",
       "framework": "react-native"
     }

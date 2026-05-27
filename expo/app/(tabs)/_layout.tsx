@@ -18,6 +18,7 @@ export default function TabLayout() {
     <View style={styles.container}>
       <Tabs
         tabBar={(props) => <TopTabBar {...props} />}
+        style={styles.tabs}
         screenOptions={{
           headerShown: false,
           tabBarPosition: 'top',
@@ -48,6 +49,9 @@ const createStyles = (Colors: ColorSet) =>
     container: {
       flex: 1,
       backgroundColor: Colors.background,
+    },
+    tabs: {
+      flex: 1,
     },
     adBar: {
       backgroundColor: Colors.background,
