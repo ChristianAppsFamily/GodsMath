@@ -16,9 +16,9 @@ export default function TabLayout() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.tabs}>
       <Tabs
         tabBar={(props) => <TopTabBar {...props} />}
-        style={styles.tabs}
         screenOptions={{
           headerShown: false,
           tabBarPosition: 'top',
@@ -29,6 +29,7 @@ export default function TabLayout() {
         <Tabs.Screen name="history" />
         <Tabs.Screen name="settings" />
       </Tabs>
+      </View>
       {!removeAds && (
         <View
           style={[

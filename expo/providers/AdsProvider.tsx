@@ -80,7 +80,6 @@ function useAdsContext() {
     () => ({
       sdkReady,
       adsEnabled: isSupportedPlatform && !removeAds,
-      sdkReady,
       bannerAdUnitId: BANNER_AD_UNIT_ID,
       canRequestPersonalizedAds,
       setPersonalizedAdsAllowed,
@@ -95,7 +94,6 @@ function useAdsContext() {
       setPersonalizedAdsAllowed,
       onTabSwitch,
       showInterstitialIfLoaded,
-      bannerAdUnitId,
     ],
   );
 }
